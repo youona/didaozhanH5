@@ -6,7 +6,6 @@
   top: 50%;
   transform: translate(-50%, -50%);
   transform-origin: 50% 50%;
-  transition: transform .5s var(--ease-out);
   will-change: transform;
 }
 
@@ -87,6 +86,14 @@
   91% { opacity: .42; }
   92% { opacity: .6; }
   93% { opacity: .46; }
+}
+
+/* 手机上别用 mix-blend-mode：Safari/Edge 移动端会为它单独建合成层，
+   缩放后的舞台每帧都要重组，看着就是按钮在跳、边缘发虚。
+   胶片齿孔纹也一并关掉——它在手机上几乎看不见，却一直占着一层。 */
+@media (max-width: 1024px) {
+  .stage-grain { mix-blend-mode: normal; opacity: .1; }
+  .film-grain { display: none; }
 }
 
 /* 载入 */

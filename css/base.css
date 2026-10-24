@@ -33,6 +33,7 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
   background: var(--night);
   color: var(--paper);
   font-family: var(--font-sans);
@@ -98,13 +99,27 @@ svg { display: block; }
 }
 
 .btn--enter {
+  position: relative;
   margin-top: 56px;
-  animation: pulse-red 2.6s var(--ease-soft) infinite;
 }
 
-@keyframes pulse-red {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(176, 67, 47, .55); }
-  60% { box-shadow: 0 0 0 22px rgba(176, 67, 47, 0); }
+/* 呼吸圈：用 transform/opacity（走合成层）而不是 box-shadow（每帧重绘），
+   手机上一帧 box-shadow 扩散 22px 会让按钮边缘抖，看着像闪。 */
+.btn--enter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(176, 67, 47, .55);
+  animation: pulse-ring 2.6s var(--ease-soft) infinite;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: .8; }
+  62% { transform: scale(1.26); opacity: 0; }
+  100% { transform: scale(1.26); opacity: 0; }
 }
 
 /* ---------- 工具 ---------- */
