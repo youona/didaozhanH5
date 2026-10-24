@@ -1,0 +1,121 @@
+/* base.css — 重置、颜色、排版、通用控件 */
+
+:root {
+  --ink: #241d15;
+  --ink-2: #4d3d2c;
+  --ink-3: #7a6650;
+  --paper: #efe6d4;
+  --paper-2: #e3d5bd;
+  --paper-3: #d6c5a8;
+  --earth: #b08a5a;
+  --earth-2: #8a6a41;
+  --earth-3: #5d472c;
+  --zhu: #8c2f24;
+  --zhu-2: #b0432f;
+  --night: #14100c;
+  --night-2: #1f180f;
+  --lamp: #e8b35a;
+  --ok: #5d7a46;
+
+  --font-serif: "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+  --font-sans: "PingFang SC", "HarmonyOS Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+
+  --ease-out: cubic-bezier(.23, .65, .27, 1);
+  --ease-soft: cubic-bezier(.33, .1, .25, 1);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--night);
+  color: var(--paper);
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  overscroll-behavior: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, p, ol, ul, li, figure { margin: 0; padding: 0; }
+li { list-style: none; }
+
+svg { display: block; }
+
+/* ---------- 按钮 ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 52px;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  letter-spacing: .18em;
+  color: var(--paper);
+  background: var(--zhu);
+  border: 2px solid var(--zhu);
+  transition: transform .28s var(--ease-out), background .28s, color .28s;
+  will-change: transform;
+}
+
+.btn:hover { transform: translateY(-2px); background: var(--zhu-2); }
+.btn:active { transform: translateY(1px) scale(.985); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--paper);
+  border-color: color-mix(in srgb, var(--paper) 42%, transparent);
+}
+.btn--ghost:hover { background: color-mix(in srgb, var(--paper) 12%, transparent); }
+
+.btn--small {
+  padding: 12px 30px;
+  font-size: 24px;
+  letter-spacing: .12em;
+}
+
+.btn--enter {
+  margin-top: 56px;
+  animation: pulse-red 2.6s var(--ease-soft) infinite;
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(176, 67, 47, .55); }
+  60% { box-shadow: 0 0 0 22px rgba(176, 67, 47, 0); }
+}
+
+/* ---------- 工具 ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+

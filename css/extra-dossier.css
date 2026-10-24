@@ -1,0 +1,219 @@
+/* extra-dossier.css — 史料抽屉：段底出处行后的“看详情”，从右侧滑出一层纸卡 */
+
+/* ── 触发按钮（插在每段 .sc-src 行尾） ───────────────────── */
+.dd-src-more {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 0 0 1px 12px;
+  border: 0;
+  border-left: 1px solid rgba(239, 230, 212, 0.3);
+  background: none;
+  color: #d98b6a;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  vertical-align: baseline;
+  transition: color 0.2s var(--ease-soft), border-color 0.2s var(--ease-soft);
+}
+.dd-src-more:hover { color: #f0b48e; border-left-color: rgba(239, 230, 212, 0.6); }
+.dd-src-more:active { color: #efe6d4; }
+.dd-src-more:focus-visible { outline: 1px dashed currentColor; outline-offset: 4px; }
+
+/* 第二段是纸色底，出处行本来就用深褐，按钮跟着换深朱砂 */
+.scene[data-key="net"] .dd-src-more { color: #8c2f24; border-left-color: rgba(77, 61, 44, 0.35); }
+.scene[data-key="net"] .dd-src-more:hover { color: #b0432f; border-left-color: rgba(77, 61, 44, 0.65); }
+.scene[data-key="net"] .dd-src-more:active { color: #5d472c; }
+
+/* ── 覆盖层（absolute，跟着 1672×941 的舞台缩放） ─────────── */
+.dd-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 44;
+  display: none;
+}
+.dd-layer.is-on { display: block; }
+
+.dd-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(10, 7, 4, 0.56);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-soft);
+  cursor: pointer;
+}
+.dd-layer.is-open .dd-mask { opacity: 1; }
+
+/* ── 抽屉本体 ───────────────────────────────────────────── */
+.dd-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  height: 100%;
+  background: #efe6d4;
+  color: #241d15;
+  border-left: 1px solid #8a6a41;
+  box-shadow: -22px 0 48px rgba(0, 0, 0, 0.42);
+  font-family: var(--font-serif);
+  transform: translateX(100%);
+  transition: transform 0.44s var(--ease-out);
+  user-select: text;
+}
+.dd-layer.is-open .dd-drawer { transform: translateX(0); }
+.dd-drawer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #8c2f24;
+}
+
+/* 头部 */
+.dd-head {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 40px 38px 22px;
+  border-bottom: 1px solid rgba(36, 29, 21, 0.2);
+  background: #e3d5bd;
+}
+.dd-kicker {
+  margin: 0;
+  color: #8c2f24;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.26em;
+}
+.dd-title {
+  margin: 10px 0 0;
+  padding-right: 54px;
+  color: #241d15;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+}
+.dd-sub {
+  margin: 8px 0 0;
+  color: #7a6650;
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+}
+.dd-close {
+  position: absolute;
+  top: 26px;
+  right: 26px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(36, 29, 21, 0.35);
+  border-radius: 0;
+  background: none;
+  color: #4d3d2c;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  line-height: 36px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.18s var(--ease-soft), color 0.18s var(--ease-soft);
+}
+.dd-close:hover { background: #241d15; color: #efe6d4; }
+.dd-close:focus-visible { outline: 1px dashed #8c2f24; outline-offset: 3px; }
+
+/* 滚动正文 */
+.dd-body {
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 26px 38px 34px;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b08a5a transparent;
+}
+.dd-body::-webkit-scrollbar { width: 6px; }
+.dd-body::-webkit-scrollbar-track { background: transparent; }
+.dd-body::-webkit-scrollbar-thumb { background: #b08a5a; }
+
+.dd-lede {
+  margin: 0 0 8px;
+  padding: 0 0 0 14px;
+  border-left: 2px solid #b08a5a;
+  color: #4d3d2c;
+  font-size: 14.5px;
+  line-height: 1.95;
+  letter-spacing: 0.02em;
+  text-align: justify;
+}
+
+/* 每一条 */
+.dd-item {
+  padding: 22px 0 20px;
+  border-bottom: 1px solid rgba(36, 29, 21, 0.14);
+}
+.dd-item:last-child { border-bottom: 0; padding-bottom: 6px; }
+.dd-item-head {
+  margin: 0 0 10px;
+  color: #8c2f24;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+}
+.dd-item-no {
+  margin-right: 9px;
+  color: #b08a5a;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+.dd-item-text {
+  margin: 0;
+  color: #241d15;
+  font-size: 15.5px;
+  line-height: 1.95;
+  letter-spacing: 0.015em;
+  text-align: justify;
+}
+.dd-item-src {
+  margin: 11px 0 0;
+  color: #7a6650;
+  font-size: 12.5px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+.dd-tag {
+  margin-right: 5px;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.dd-tag--shi { color: #8c2f24; }
+.dd-tag--film { color: #6b4a22; }
+.dd-tag--hou { color: #4d5a3a; }
+.dd-tag--yi { color: #6b6250; }
+
+/* 底部 */
+.dd-foot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 38px 15px;
+  border-top: 1px solid rgba(36, 29, 21, 0.2);
+  color: #7a6650;
+  font-size: 11.5px;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+}
+.dd-foot b { color: #8c2f24; font-weight: 400; }
+

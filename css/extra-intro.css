@@ -1,0 +1,16 @@
+/* extra-intro.css — 序章显影的辅助样式（动画本身在 js/intro.js 里用 WAAPI 播） */
+
+.scene[data-key="prologue"] .sc-bg {
+  transform-origin: 50% 52%;
+}
+
+.scene[data-key="prologue"] .sc-title span {
+  display: inline-block;
+  backface-visibility: hidden;
+}
+
+/* 显影期间别让纸张纹理把模糊动画拖慢 */
+.scene[data-key="prologue"] .stage-grain {
+  opacity: .5;
+}
+

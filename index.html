@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="description" content="1942 年冀中平原，人往土里走，路才活下来。一个可交互的地道战叙事网页。" />
+<meta name="theme-color" content="#14100c" />
+<title>地道战 · 地下长城</title>
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/stage.css" />
+<link rel="stylesheet" href="css/scenes.css" />
+<link rel="stylesheet" href="css/extra-intro.css" />
+<link rel="stylesheet" href="css/extra-alarm.css" />
+<link rel="stylesheet" href="css/extra-hunt.css" />
+<link rel="stylesheet" href="css/extra-fortify.css" />
+<link rel="stylesheet" href="css/extra-dossier.css" />
+<link rel="stylesheet" href="css/extra-stats.css" />
+</head>
+<body class="booting">
+
+<div id="rotate-hint" aria-hidden="true"><span>把手机横过来，看得更敞亮</span></div>
+
+<div id="rotor">
+  <div id="stage" class="stage">
+    <div class="stage-grain" aria-hidden="true"></div>
+    <div class="stage-vignette" aria-hidden="true"></div>
+    <div class="film-grain" aria-hidden="true"></div>
+
+    <!-- 0 · 序 -->
+    <section class="scene" data-i="0" data-key="prologue">
+      <div class="sc-bg" data-bg="plains" aria-hidden="true"></div>
+      <div class="sc-inner sc-inner--center">
+        <p class="sc-kicker"><b>1942</b><i></i>冀中平原</p>
+        <h1 class="sc-title sc-title--xl">地上没路了</h1>
+        <p class="sc-lede">据点一千七百五十三座，封锁沟四千一百八十七公里，公路两万多公里。<br />炮楼把平原切成一块一块，人走在路上，命不在自己手里。</p>
+        <button class="btn btn--enter" id="btn-enter" type="button"><span>进村</span></button>
+      </div>
+      <p class="sc-src">【史料】据点、封锁沟、公路数据据冉庄地道战纪念馆公开口径</p>
+    </section>
+
+    <!-- 1 · 挖 -->
+    <section class="scene" data-i="1" data-key="dig">
+      <div class="sc-bg" data-bg="crack" aria-hidden="true"></div>
+      <div class="sc-inner">
+        <p class="sc-kicker"><b>一</b><i></i>挖</p>
+        <h2 class="sc-title">自家院里挖个坑</h2>
+        <p class="sc-lede">最早是单口的“蛤蟆蹲”——一口竖井，一个人躲。<br />1941 年冬，敌人发现一个，就往里灌水、放毒。<br />第二年开春，村里开始往两口、往院子里、往隔壁家挖。</p>
+      </div>
+      <div class="dig" id="dig">
+        <div class="dig-soil" id="dig-soil" aria-hidden="true"></div>
+        <div class="dig-shaft" id="dig-shaft" aria-hidden="true"></div>
+        <div class="dig-grains" id="dig-grains" aria-hidden="true"></div>
+        <p class="dig-hint" id="dig-hint">按住画面左右拖动，把土刨出来</p>
+        <p class="dig-readout"><span id="dig-depth">0.0</span><i>米</i></p>
+        <div class="dig-bar"><span id="dig-bar-fill"></span></div>
+      </div>
+      <p class="sc-src">【史料】单口“蛤蟆蹲”被破坏后改双口，再发展为户通户、村连村</p>
+    </section>
+
+    <!-- 2 · 连 -->
+    <section class="scene" data-i="2" data-key="net">
+      <div class="sc-bg" data-bg="paper" aria-hidden="true"></div>
+      <div class="sc-inner sc-inner--top">
+        <p class="sc-kicker"><b>二</b><i></i>连</p>
+        <h2 class="sc-title">二十四条支线</h2>
+        <p class="sc-lede">十字街四条干线二点二五公里；南北支线十三条，东西支线十一条。<br />户通户、村连村，全长三十二华里，约十六公里。</p>
+      </div>
+      <div class="puzzle" id="puzzle">
+        <svg class="puzzle-stage" id="puzzle-svg" viewBox="124 56 1178 464" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="puzzle-tray" id="puzzle-tray" role="list" aria-label="待拼接的地道段"></div>
+        <p class="puzzle-hint" id="puzzle-hint">把七段地道拖进图里，拼成十字街那张网</p>
+        <div class="puzzle-count"><span id="puzzle-count">0</span> / 7</div>
+      </div>
+      <p class="sc-src">【史料】干线与支线数、全长据冉庄地道战纪念馆；洞宽 0.7—0.8 米、高 1—1.5 米</p>
+    </section>
+
+    <!-- 3 · 藏 -->
+    <section class="scene" data-i="3" data-key="hide">
+      <div class="sc-bg" data-bg="yard" aria-hidden="true"></div>
+      <div class="sc-inner sc-inner--top">
+        <p class="sc-kicker"><b>三</b><i></i>藏</p>
+        <h2 class="sc-title">洞口就在脚下</h2>
+      </div>
+      <div class="cards" id="cards" aria-label="洞口伪装翻卡"></div>
+      <p class="cards-hint" id="cards-hint">锅台、炕面、马槽底、井口、面柜、衣柜、织布机下、夹壁墙——平地上的洞口盖一块滑板，上面照常推碾子、垛柴火。把每张卡翻过来，看看它藏的是什么。</p>
+      <p class="sc-src">【史料】洞口位置与“翻眼”防毒防水做法据冉庄地道战纪念馆</p>
+    </section>
+
+    <!-- 4 · 守 -->
+    <section class="scene" data-i="4" data-key="guard">
+      <div class="sc-bg" data-bg="night" aria-hidden="true"></div>
+      <div class="sc-inner sc-inner--top">
+        <p class="sc-kicker"><b>四</b><i></i>守</p>
+        <h2 class="sc-title">五防：水毒火钻破</h2>
+        <p class="sc-lede">灌水就挖“翻眼”把水引走；放毒就把毒气导进下层、封住口；<br />点火有挡火墙；敌人钻进来，有卡口和陷阱。</p>
+      </div>
+      <div class="quiz" id="quiz"></div>
+      <p class="sc-src">【史料】五防与“翻眼”“卡口”做法据冉庄地道战纪念馆与民兵口述</p>
+    </section>
+
+    <!-- 5 · 打 -->
+    <section class="scene" data-i="5" data-key="fight">
+      <div class="sc-bg" data-bg="roof" aria-hidden="true"></div>
+      <div class="sc-inner sc-inner--top">
+        <p class="sc-kicker"><b>五</b><i></i>打</p>
+        <h2 class="sc-title">打一枪，换一个地方</h2>
+        <p class="sc-lede">村边先杀伤，把敌人往村里引；高房、院落、街巷三层火力；<br />打完就下地道，从另一个洞口出来。</p>
+      </div>
+      <div class="shooter" id="shooter">
+        <div class="shooter-field" id="shooter-field"></div>
+        <div class="shooter-hud">
+          <span class="shooter-time" id="shooter-time">25.0</span>
+          <span class="shooter-hit" id="shooter-hit">0</span>
+          <span class="shooter-msg" id="shooter-msg"></span>
+        </div>
+        <button class="btn btn--small" id="shooter-start" type="button">开始</button>
+      </div>
+      <p class="sc-src">【影片】【史料】台词与战法，电影与史实分别标注</p>
+    </section>
+
+    <!-- 6 · 人 -->
+    <section class="scene" data-i="6" data-key="man">
+      <div class="sc-bg" data-bg="cell" aria-hidden="true"></div>
+      <div class="sc-inner sc-inner--top">
+        <p class="sc-kicker"><b>六</b><i></i>人</p>
+        <h2 class="sc-title">张森林，三十四岁</h2>
+        <p class="sc-lede">1943 年，敌人逼他交出党员名单和地道图，他没交。<br />被活埋时三十四岁。狱中留下《就义辞》。</p>
+      </div>
+      <div class="poem" id="poem"></div>
+      <p class="sc-src">【史料】张森林（1909—1943）事迹与《就义辞》据冉庄地道战纪念馆与地方史志</p>
+    </section>
+
+    <!-- 7 · 尾 -->
+    <section class="scene" data-i="7" data-key="today">
+      <div class="sc-bg" data-bg="field" aria-hidden="true"></div>
+      <div class="sc-inner sc-inner--top">
+        <p class="sc-kicker"><b>尾</b><i></i>地下长城</p>
+        <h2 class="sc-title">地上照常种庄稼</h2>
+        <p class="sc-lede">纪念馆、二十万平方米保护区、地下保留三千米。<br />地里长着玉米，地下是当年的路。</p>
+        <p class="poster-note">图片来源：AI 生成氛围图与程序化图形，非史料影像 · 参考影片：一九六五年八一电影制片厂《地道战》</p>
+      </div>
+      <div class="poster-wrap">
+        <canvas id="poster" width="750" height="1334" aria-label="分享海报预览"></canvas>
+        <button class="btn btn--small" id="btn-poster" type="button">再生成一张</button>
+        <button class="btn btn--small btn--ghost" id="btn-save" type="button">保存图片</button>
+      </div>
+      <p class="sc-src">【史料】保护区面积与地下保留长度据冉庄地道战纪念馆公开口径</p>
+    </section>
+
+    <!-- 导航 -->
+    <nav class="nav" id="nav" aria-label="章节导航">
+      <button class="nav-btn" id="nav-prev" type="button" aria-label="上一段">‹</button>
+      <ol class="nav-dots" id="nav-dots"></ol>
+      <button class="nav-btn" id="nav-next" type="button" aria-label="下一段">›</button>
+    </nav>
+
+    <div class="hud">
+      <button class="hud-btn" id="btn-mute" type="button" aria-pressed="false">音效 开</button>
+      <button class="hud-btn" id="btn-restart" type="button">从头看</button>
+    </div>
+
+    <div class="loader" id="loader" aria-hidden="true"><span></span></div>
+  </div>
+</div>
+
+<script src="js/motion.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/data/content.js"></script>
+<script src="js/stage.js"></script>
+<script src="js/dig.js"></script>
+<script src="js/puzzle.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/hunt.js"></script>
+<script src="js/fortify.js"></script>
+<script src="js/shooter.js"></script>
+<script src="js/poem.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/dossier.js"></script>
+<script src="js/poster.js"></script>
+<script src="js/alarm.js"></script>
+<script src="js/intro.js"></script>
+<script src="js/boot.js"></script>
+</body>
+</html>

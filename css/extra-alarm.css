@@ -1,0 +1,161 @@
+/* extra-alarm.css — 警报传递（第 5 段打靶之后的附加关）
+   默认隐藏，只有 DD.extra.alarm.start() 时才铺出来。 */
+
+.alarm {
+  position: absolute;
+  inset: 0;
+  z-index: 24;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(9, 7, 5, .92) 0 42%, rgba(5, 4, 3, .975) 100%);
+  font-family: var(--font-serif);
+  color: var(--cream, #efe6d4);
+}
+.alarm.is-live,
+.alarm.is-over { display: flex; }
+
+/* 开场问话 */
+.alarm-ask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 880px;
+  padding: 0 32px;
+  text-align: center;
+}
+.alarm-ask.is-off { display: none; }
+.alarm-tip {
+  font-size: 32px;
+  letter-spacing: .05em;
+  line-height: 1.45;
+  color: #efe6d4;
+  margin: 0;
+}
+.alarm-sub {
+  font-size: 20px;
+  line-height: 1.7;
+  letter-spacing: .04em;
+  color: rgba(239, 230, 212, .62);
+  margin: 0;
+}
+.alarm-go {
+  margin-top: 10px;
+  padding: 14px 40px;
+  font-size: 22px;
+  letter-spacing: .16em;
+}
+
+/* 节拍条 */
+.alarm-track {
+  position: relative;
+  width: 980px;
+  height: 132px;
+  display: none;
+  border-top: 1px solid rgba(239, 230, 212, .14);
+  border-bottom: 1px solid rgba(239, 230, 212, .14);
+  background: linear-gradient(180deg, rgba(239, 230, 212, .035), rgba(239, 230, 212, 0) 42%, rgba(239, 230, 212, .03));
+}
+.alarm-track.is-on { display: block; }
+.alarm-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(239, 230, 212, .16);
+}
+.alarm-line {
+  position: absolute;
+  left: 16%;
+  top: -18px;
+  bottom: -18px;
+  width: 2px;
+  background: #8c2f24;
+  box-shadow: 0 0 24px rgba(140, 47, 36, .6);
+}
+.alarm-bell {
+  position: absolute;
+  left: 16%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 179, 90, .5);
+  color: #e8b35a;
+  font-size: 22px;
+  letter-spacing: .02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 9, 7, .8);
+}
+.alarm-lane {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.alarm-note {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin-top: -13px;
+  border-radius: 50%;
+  background: rgba(239, 230, 212, .82);
+  box-shadow: 0 0 18px rgba(239, 230, 212, .3);
+  will-change: transform;
+}
+.alarm-note.is-hit {
+  background: #e8b35a;
+  box-shadow: 0 0 34px rgba(232, 179, 90, .85);
+}
+
+/* 计数 */
+.alarm-count {
+  display: none;
+  font-size: 26px;
+  letter-spacing: .08em;
+  color: rgba(239, 230, 212, .5);
+}
+.alarm-count.is-on { display: block; }
+.alarm-count b {
+  font-size: 46px;
+  font-weight: 500;
+  color: #e8b35a;
+}
+
+/* 提示语 */
+.alarm-msg {
+  min-height: 34px;
+  font-size: 22px;
+  letter-spacing: .06em;
+  color: rgba(239, 230, 212, .8);
+  text-align: center;
+}
+
+/* 警报铺开时，把打靶区压暗，别让底下的倒计时透上来 */
+.scene[data-i="5"]:has(.alarm.is-live) .shooter,
+.scene[data-i="5"]:has(.alarm.is-over) .shooter {
+  opacity: .12;
+  transition: opacity .35s;
+}
+
+/* 敲空时整层轻震 */
+.alarm.is-miss {
+  animation: alarm-shake .3s linear;
+}
+@keyframes alarm-shake {
+  0%, 100% { transform: translateX(0); }
+  22% { transform: translateX(-7px); }
+  48% { transform: translateX(6px); }
+  74% { transform: translateX(-3px); }
+}
+

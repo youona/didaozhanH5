@@ -1,0 +1,439 @@
+/* extra-hunt.css — 三·藏 的追加关：村里找洞口
+ *
+ * 只服务 js/hunt.js：一个入口（.hunt-entry）+ 一层段内任务层（.hunt 及 .hunt-*）。
+ * 全部绝对定位在 .scene[data-i="3"] 里，不用 position: fixed（舞台被 scale 过）。
+ * 土黄 / 纸白 / 朱砂 / 油灯色，无圆角卡片、无渐变按钮、无 emoji。
+ */
+
+/* ================================================================ 入口 */
+
+.hunt-entry {
+  position: absolute;
+  right: 118px;
+  top: 150px;
+  z-index: 7;
+  width: 336px;
+  text-align: right;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity .55s var(--ease-soft), transform .55s var(--ease-out), visibility .55s;
+}
+
+.hunt-entry.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.hunt-entry-kicker {
+  font-size: 15px;
+  letter-spacing: .24em;
+  color: rgba(232, 179, 90, .82);
+}
+
+.hunt-entry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  padding: 15px 26px 17px 30px;
+  font-family: var(--font-serif);
+  font-size: 30px;
+  letter-spacing: .14em;
+  color: var(--paper);
+  background: rgba(16, 12, 8, .58);
+  border: 1px solid rgba(232, 179, 90, .42);
+  transition: background .3s, border-color .3s, color .3s;
+}
+
+.hunt-entry-btn i {
+  font-style: normal;
+  font-size: 26px;
+  color: var(--lamp);
+  transition: transform .35s var(--ease-out);
+}
+
+.hunt-entry-btn:hover {
+  background: rgba(232, 179, 90, .14);
+  border-color: rgba(232, 179, 90, .82);
+}
+
+.hunt-entry-btn:hover i { transform: translateX(6px); }
+.hunt-entry-btn:active { transform: translateY(1px); }
+
+.hunt-entry-note {
+  margin-top: 10px;
+  min-height: 20px;
+  font-size: 16px;
+  letter-spacing: .08em;
+  color: rgba(239, 230, 212, .46);
+}
+
+/* ================================================================ 任务层 */
+
+.hunt {
+  position: absolute;
+  inset: 0;
+  z-index: 36;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .38s var(--ease-soft), visibility .38s;
+}
+
+.hunt.is-on {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 找洞口铺开时，先把主 HUD 和翻页点收起来，别跟倒计时抢地方 */
+.scene[data-i="3"]:has(.hunt.is-on) ~ .hud,
+.scene[data-i="3"]:has(.hunt.is-on) ~ .nav {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+
+/* 四格版画铺满整层；用 100% 100% 是为了让百分比热点跟画面像素一一对齐 */
+.hunt-photo {
+  position: absolute;
+  inset: 0;
+  background-color: #1b130b;
+  background-image: url("../assets/webp/a05-holes.webp");
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.hunt-veil {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(12, 9, 6, .24);
+  background-image: radial-gradient(76% 68% at 50% 47%,
+      rgba(10, 7, 5, 0) 0%,
+      rgba(10, 7, 5, .30) 64%,
+      rgba(10, 7, 5, .68) 100%);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- 8 个热点 */
+
+.hunt-field {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+  transition: opacity .32s var(--ease-soft);
+}
+
+.hunt-spot {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  border: 0;
+  cursor: crosshair;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hunt-spot:focus-visible {
+  outline: 2px solid rgba(232, 179, 90, .9);
+  outline-offset: 3px;
+}
+
+/* 鼠标扫到附近时给一圈极淡的提示，纯盲点太劝退 */
+.hunt-spot:hover::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 50%;
+  border: 1px dashed rgba(232, 179, 90, .5);
+  animation: hunt-hint 1.1s ease-out infinite;
+}
+@keyframes hunt-hint {
+  0% { transform: scale(.82); opacity: .85; }
+  100% { transform: scale(1.24); opacity: 0; }
+}
+
+/* 猜中：圆形光斑留下来当记号 */
+.hunt-spot.is-found {
+  cursor: default;
+  background: radial-gradient(circle at 50% 50%,
+      rgba(232, 179, 90, .36) 0%,
+      rgba(232, 179, 90, .13) 54%,
+      rgba(232, 179, 90, 0) 74%);
+  box-shadow: 0 0 0 1px rgba(232, 179, 90, .5), 0 0 26px 3px rgba(232, 179, 90, .26);
+}
+
+.hunt-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #e8b35a;
+  box-shadow: 0 0 18px rgba(232, 179, 90, .6);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hunt-tag {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hunt-tag-in {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 11px 5px;
+  white-space: nowrap;
+  background: rgba(14, 10, 7, .84);
+  border-top: 1px solid rgba(232, 179, 90, .62);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .45);
+}
+
+.hunt-tag-in i {
+  font-style: normal;
+  font-size: 14px;
+  letter-spacing: .14em;
+  color: var(--lamp);
+}
+
+.hunt-tag-in b {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 25px;
+  letter-spacing: .1em;
+  color: var(--paper);
+}
+
+/* ---------------------------------------------------------------- 顶部读数 */
+
+.hunt-hud {
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  z-index: 3;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 9px 34px 11px;
+  background: rgba(16, 12, 8, .87);
+  border: 1px solid rgba(232, 179, 90, .26);
+  box-shadow: 0 20px 54px rgba(0, 0, 0, .48);
+}
+
+.hunt-clock {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.hunt-clock b {
+  display: inline-block;
+  min-width: 1.32em;
+  text-align: right;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: .02em;
+  color: #e8b35a;
+  font-variant-numeric: tabular-nums;
+}
+
+.hunt-clock i {
+  font-style: normal;
+  font-size: 20px;
+  letter-spacing: .2em;
+  color: rgba(239, 230, 212, .56);
+}
+
+.hunt-clock.is-low b { color: var(--zhu-2); }
+
+.hunt-hud-sep {
+  display: block;
+  width: 1px;
+  height: 34px;
+  background: rgba(239, 230, 212, .16);
+}
+
+.hunt-tally {
+  font-size: 21px;
+  letter-spacing: .08em;
+  color: rgba(239, 230, 212, .72);
+}
+
+.hunt-tally b {
+  margin: 0 4px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 30px;
+  color: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+.hunt-tally em {
+  font-style: normal;
+  font-size: 19px;
+  color: rgba(239, 230, 212, .48);
+}
+
+.hunt-msg {
+  position: absolute;
+  left: 50%;
+  top: 106px;
+  z-index: 3;
+  transform: translateX(-50%) translateY(-4px);
+  font-size: 19px;
+  letter-spacing: .14em;
+  color: var(--lamp);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s, transform .22s var(--ease-out);
+}
+
+.hunt-msg.is-on {
+  opacity: 1;
+  transform: translateX(-50%);
+}
+
+.hunt-peek {
+  position: absolute;
+  right: 148px;
+  top: 30px;
+  z-index: 3;
+  padding: 10px 20px;
+  font-size: 19px;
+  letter-spacing: .12em;
+  color: rgba(232, 179, 90, .82);
+  border: 1px solid rgba(232, 179, 90, .34);
+  background: rgba(12, 10, 8, .5);
+  transition: color .25s, border-color .25s, background .25s;
+}
+
+.hunt-peek i {
+  font-style: normal;
+  font-size: 15px;
+  letter-spacing: .04em;
+  color: rgba(176, 67, 47, .9);
+  margin-left: 4px;
+}
+
+.hunt-peek:hover {
+  color: var(--lamp);
+  border-color: rgba(232, 179, 90, .7);
+  background: rgba(20, 16, 12, .7);
+}
+
+.hunt-peek:focus-visible {
+  outline: 2px solid rgba(232, 179, 90, .7);
+  outline-offset: 3px;
+}
+
+/* 提示闪一下：一个虚线圆环在该洞口位置脉动 */
+.hunt-spot.is-peek::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 2px dashed rgba(232, 179, 90, .92);
+  box-shadow: 0 0 22px 4px rgba(232, 179, 90, .3);
+  animation: huntPeek .52s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes huntPeek {
+  from { opacity: .32; transform: scale(.92); }
+  to   { opacity: 1;   transform: scale(1.08); }
+}
+
+.hunt-quit {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  z-index: 3;
+  padding: 10px 20px;
+  font-size: 19px;
+  letter-spacing: .16em;
+  color: rgba(239, 230, 212, .58);
+  border: 1px solid rgba(239, 230, 212, .2);
+  transition: color .25s, border-color .25s;
+}
+
+.hunt-quit:hover {
+  color: var(--paper);
+  border-color: rgba(239, 230, 212, .55);
+}
+
+.hunt-quit:focus-visible {
+  outline: 2px solid rgba(232, 179, 90, .7);
+  outline-offset: 3px;
+}
+
+.hunt-tip {
+  position: absolute;
+  left: 118px;
+  bottom: 28px;
+  z-index: 3;
+  font-size: 17px;
+  letter-spacing: .05em;
+  color: rgba(239, 230, 212, .5);
+  pointer-events: none;
+}
+
+.hunt-tip span {
+  margin-left: 14px;
+  color: rgba(239, 230, 212, .32);
+}
+
+/* ---------------------------------------------------------------- 结算条 */
+
+.hunt-result {
+  position: absolute;
+  left: 50%;
+  bottom: 96px;
+  z-index: 3;
+  min-width: 430px;
+  padding: 20px 46px 22px;
+  text-align: center;
+  background: rgba(16, 12, 8, .94);
+  border: 1px solid rgba(232, 179, 90, .4);
+  box-shadow: 0 28px 74px rgba(0, 0, 0, .62);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(12px);
+  transition: opacity .32s var(--ease-soft), transform .32s var(--ease-out), visibility .32s;
+}
+
+.hunt.is-result .hunt-result {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%);
+}
+
+.hunt-result b {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 42px;
+  letter-spacing: .1em;
+  line-height: 1.2;
+  color: var(--paper);
+}
+
+.hunt-result span {
+  display: block;
+  margin-top: 8px;
+  font-size: 19px;
+  letter-spacing: .1em;
+  color: rgba(239, 230, 212, .62);
+}
+
+.hunt.is-over .hunt-field { opacity: .38; }

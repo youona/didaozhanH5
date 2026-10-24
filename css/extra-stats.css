@@ -1,0 +1,156 @@
+/* extra-stats.css — 尾段战果结算：一张压在尾段上的旧账簿
+   只由 js/stats.js 使用。坐标按 1672×941 的固定舞台给，不随舞台缩放变。 */
+
+.dds {
+  position: absolute;
+  left: 118px;
+  top: 452px;
+  z-index: 18;
+  width: 724px;
+  padding: 20px 30px 18px;
+  font-family: var(--font-serif);
+  color: #241d15;
+  text-align: left;
+  background: #efe6d4;
+  border: 1px solid rgba(93, 71, 44, .58);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity .62s var(--ease-soft),
+    transform .62s var(--ease-soft),
+    visibility .62s;
+  pointer-events: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.dds.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+
+.dds.is-off { display: none; }
+
+/* 账簿内框：一圈细线，不是阴影 */
+.dds::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(93, 71, 44, .18);
+  pointer-events: none;
+}
+
+.dds-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dds-kicker {
+  font-size: 16px;
+  letter-spacing: .34em;
+  color: #8c2f24;
+}
+
+.dds-top-rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(93, 71, 44, .34);
+}
+
+.dds-close {
+  padding: 0 0 2px;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  letter-spacing: .14em;
+  color: #8c2f24;
+  border-bottom: 1px solid rgba(140, 47, 36, .5);
+  cursor: pointer;
+}
+.dds-close:hover { color: #b0432f; border-bottom-color: #b0432f; }
+
+.dds-title {
+  margin: 9px 0 0;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: .03em;
+  color: #241d15;
+}
+
+.dds-list {
+  margin: 6px 0 0;
+  padding: 0;
+}
+
+.dds-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 22px;
+  margin: 0;
+  padding: 4px 0 3px;
+  border-bottom: 1px solid rgba(93, 71, 44, .16);
+}
+.dds-row:last-child { border-bottom: 0; }
+
+.dds-row dt {
+  font-size: 18px;
+  letter-spacing: .1em;
+  color: #5d472c;
+  white-space: nowrap;
+}
+
+.dds-row dd {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.dds-num {
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: #8c2f24;
+}
+
+.dds-unit {
+  font-size: 14px;
+  font-style: normal;
+  letter-spacing: .05em;
+  color: #7a6650;
+}
+
+.dds-tag {
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: #7a6650;
+}
+
+.dds-note {
+  margin: 10px 0 0;
+  padding-top: 8px;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: .04em;
+  color: rgba(93, 71, 44, .72);
+  border-top: 1px solid rgba(93, 71, 44, .28);
+}
+
+/* hash 直达：只留一句话，不要空账簿 */
+.dds.is-direct {
+  width: 640px;
+  top: 472px;
+}
+.dds.is-direct .dds-title {
+  font-size: 24px;
+  line-height: 1.7;
+}
+.dds.is-direct .dds-note { display: none; }

@@ -1,0 +1,25 @@
+# 本地/临时
+_probe/
+*.log
+*.tmp
+
+# 验收产物
+shots/
+qa-out/
+.qa-edge/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 打包产物（按需提交，默认忽略）
+# index-standalone.html
+
+node_modules/
